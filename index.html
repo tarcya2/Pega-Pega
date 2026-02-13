@@ -24,21 +24,45 @@
         }
         .player {
             position: absolute;
-            width:40px;
-            height: 40px;
+            width: 120px;
+            height: 70px;
             border-radius: 10px;
-            background-color: rgb(18, 18, 99);
+            background-image: url("awp-azul.png");
             top: 100px;
             left: 150px;
+            background-size: cover;
+            
         }
         .goal {
             position:absolute;
-            width: 30px;
-            height: 30px;
+            width: 100px;
+            height: 20px;
             border-radius: 10px;
-            background-color: rgb(104, 10, 10);
+            background-image: url("awp-vermelha.png");
             top: 650px;
             left: 750px;
+            background-size: cover;
+            
+        }
+        .obstacle {
+            position: absolute;
+            width: 40px;
+            height: 65px;
+            background-image: url("granada.png");
+            background-size: cover;
+            
+        }
+        .obstacle1 {
+            top: 100px;
+            left: 50px;
+        }
+        .obstacle2 {
+            top: 400px;
+            left: 700px;
+        }
+        .obstacle3 {
+            top: 600px;
+            left: 375px;
         }
     </style>
 </head>
@@ -46,19 +70,55 @@
     <div id="gameArea">
         <div class="player" id="player"></div>
         <div class="goal"></div>
+        <div class="obstacle obstacle1"></div>
+        <div class="obstacle obstacle2"></div>
+        <div class="obstacle obstacle3"></div>
     </div>
     <script>
         const player = document.getElementById("player");
+        const goal = document.querySelector (".goal");
+        const obstacles = document.querySelectorAll (".obstacle");
         const step = 20; // Distância que o personagem se move
         let posX = 180, posY = 180;
+        let gameOver = false;
+
+        function checkColision (x,y) {
+            for (let obstacle of obstacles) {
+                let obsX = obstacle.offsetLeft;
+                let obsY = obstacle.offsetTop;
+                if (x < obsX + 200 && x + 40 > obsX && y < obsY + 40 && y + 40 > obsY) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function checkWin () {
+            let goalX = goal.offsetLeft;
+            let goalY = goal.offsetTop;
+            if (posX < goalX + 40 && posX + 40 > goalX && posY < goalY + 40 && posY + 40 > goalY) {
+                alert ("PARABÉNS!!!");
+                gameOver = true;
+            }
+        }
+
 
         document.addEventListener("keydown", (event )=>{
-            if (event.key === "ArrowUp" && posY > 0) posY -= step;
-            if (event.key === "ArrowDown" && posY > 0) posY += step;
-            if (event.key === "ArrowLeft" && posX > 0) posX -= step;
-            if (event.key === "ArrowRight" && posX > 0) posX += step;
-            player.style.top = posY + "px";
-            player.style.left = posX + "px";
+            if (gameOver) return;
+            let newX = posX
+            let newY = posY
+            if (event.key === "ArrowUp" && posY > 0) newY -= step;
+            if (event.key === "ArrowDown" && posY > 0) newY += step;
+            if (event.key === "ArrowLeft" && posX > 0) newX -= step;
+            if (event.key === "ArrowRight" && posX > 0) newX += step;
+            if (!checkColision(newX, newY)) {
+                posX = newX;
+                posY = newY;
+                player.style.top = posY + "px";
+                player.style.left = posX + "px";
+            }
+            checkWin ();
+            
         });
     </script>
 </body>
