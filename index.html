@@ -25,7 +25,7 @@
         .player {
             position: absolute;
             width: 120px;
-            height: 70px;
+            height: 25gpx;
             border-radius: 10px;
             background-image: url("awp-azul.png");
             top: 100px;
@@ -83,10 +83,15 @@
         let gameOver = false;
 
         function checkColision (x,y) {
+            const playerWidth = player.offsetWidth;
+            const playerHeight = player.offsetHeight;
+            
             for (let obstacle of obstacles) {
                 let obsX = obstacle.offsetLeft;
                 let obsY = obstacle.offsetTop;
-                if (x < obsX + 200 && x + 40 > obsX && y < obsY + 40 && y + 40 > obsY) {
+                let obsWidth = obstacle.offsetWidth;
+                let obsHeight = obstacle.offsetHeight;
+                if (x < obsX + obsWidth && x + playerWidth > obsX && y < obsY + obsHeight && y + playerHeight > obsY) {
                     return true;
                 }
             }
