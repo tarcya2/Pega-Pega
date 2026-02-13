@@ -25,7 +25,7 @@
         .player {
             position: absolute;
             width: 120px;
-            height: 25gpx;
+            height: 25px;
             border-radius: 10px;
             background-image: url("awp-azul.png");
             top: 100px;
@@ -74,6 +74,8 @@
         <div class="obstacle obstacle2"></div>
         <div class="obstacle obstacle3"></div>
     </div>
+    <audio src="win.mp3" id="winSound"></audio>
+    <audio src="passo.mp3" id="moveSound"></audio>
     <script>
         const player = document.getElementById("player");
         const goal = document.querySelector (".goal");
@@ -81,6 +83,10 @@
         const step = 20; // Distância que o personagem se move
         let posX = 180, posY = 180;
         let gameOver = false;
+        let moveSound = document.getElementById ("moveSound");
+        let winSound = document.getElementById ("winSound");
+        moveSound.volume = 0.1;
+        winSound.volume = 0.1;
 
         function checkColision (x,y) {
             const playerWidth = player.offsetWidth;
@@ -104,6 +110,8 @@
             if (posX < goalX + 40 && posX + 40 > goalX && posY < goalY + 40 && posY + 40 > goalY) {
                 alert ("PARABÉNS!!!");
                 gameOver = true;
+                moveSound.stop ()
+                winSound.play ()
             }
         }
 
@@ -121,6 +129,8 @@
                 posY = newY;
                 player.style.top = posY + "px";
                 player.style.left = posX + "px";
+                moveSound.play ()
+
             }
             checkWin ();
             
