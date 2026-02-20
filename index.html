@@ -110,7 +110,8 @@
             if (posX < goalX + 40 && posX + 40 > goalX && posY < goalY + 40 && posY + 40 > goalY) {
                 alert ("PARABÉNS!!!");
                 gameOver = true;
-                moveSound.stop ()
+                moveSound.pause ();
+                moveSound.currentTime = 0
                 winSound.play ()
             }
         }
@@ -129,7 +130,8 @@
                 posY = newY;
                 player.style.top = posY + "px";
                 player.style.left = posX + "px";
-                moveSound.play ()
+                moveSound.currentTime = 0;
+                moveSound.play ();
 
             }
             checkWin ();
